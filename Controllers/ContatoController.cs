@@ -14,6 +14,20 @@ namespace Fiap.Web.Donation.Controllers
         [HttpPost]
         public IActionResult Gravar(ContatoModel contatoModel)
         {
+            string mensagem = string.Empty;
+
+            if (contatoModel.Email.Equals("fmoreni@gmail.com"))
+            {
+                mensagem = $"Contato do usuario {contatoModel.Nome} não registrado, pois já existe um contato aberto na plataforma";
+            }
+
+            else
+            {
+                mensagem = "Contato registrado com sucesso";
+            }
+
+            ViewBag.Mensagem = mensagem;
+
             return View("Sucesso");
         }
         [HttpGet]

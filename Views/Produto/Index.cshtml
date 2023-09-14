@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Meus produtos</h1>
+
+
+@if ( !String.IsNullOrEmpty((String)@TempData["mensagem"])) {
+    <div class="alert alert-warning" role="alert">@TempData["Mensagem"]</div>
+}
+<p class="toolbar">
+    <a href="/Produto/Novo" class="create btn btn-dark">Novo produto</a>
+</p>
+
+<table class="table table-striped" border="1" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th data-field="id">Id</th>
+            <th data-field="name">Nome</th>
+            <th data-field="tipo">Tipo</th>
+            <th data-field="disponivel">Disponível</th>
+            <th data-field="dataexpiracao">Expiração</th>
+            <th class="actions" width="220">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach(var produto in ViewBag.Produtos) {
+        <tr>
+            <td data-field="id">@produto.ProdutoId</td>
+            <td data-field="name">@produto.Nome</td>
+            <td data-field="tipo">@produto.TipoProdutoId</td>
+            <td data-field="disponivel">@produto.Disponivel</td>
+            <td data-field="disponivel">@produto.DataExpiracao</td>
+            <td class="actions" width="220">
+                <a href="/Produto/Detalhe/@produto.ProdutoId">Detalhe</a>
+                <a href="/Produto/Editar/@produto.ProdutoId">Editar</a>
+                <a href="/Produto/Remover/@produto.ProdutoId">Remover</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
