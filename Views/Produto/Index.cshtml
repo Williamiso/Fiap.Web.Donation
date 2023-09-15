@@ -4,6 +4,8 @@
 @{
 }
 
+@model IList<ProdutoModel>
+
 <h1>Meus produtos</h1>
 
 
@@ -28,7 +30,7 @@
     <tbody>
 
 
-        @foreach(var produto in ViewBag.Produtos) {
+        @foreach(var produto in Model) {
         <tr>
             <td data-field="id">@produto.ProdutoId</td>
             <td data-field="name">@produto.Nome</td>

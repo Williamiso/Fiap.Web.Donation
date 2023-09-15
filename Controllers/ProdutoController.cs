@@ -50,28 +50,78 @@ namespace Fiap.Web.Donation.Controllers
         public IActionResult Index()
         {
 
-            ViewBag.Produtos = produtos;
+            
             //TempData["Produtos"] = produtos;
 
-            return View();
+            return View(produtos);
         }
 
         [HttpGet]
         public IActionResult Novo()
         {
-            return View();
+            return View(new ProdutoModel());
         }
 
 
         [HttpPost]
          public IActionResult Novo(ProdutoModel produtoModel)
         {
+            if (string.IsNullOrEmpty(produtoModel.Nome))
+            {
+                ViewBag.Mensagem = "O campo nome é requerido";
+
+                return View(produtoModel);
+
+            }
+            else
+            {
+
+                //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
+                TempData["Mensagem"] = $"{produtoModel.Nome} cadastrado com sucesso!";
+
+                return RedirectToAction("Index");
+            }
+        }
+
+         [HttpGet]
+        public IActionResult Editar(int id)
+        {
+            var produto = produtos[id - 1];
+
+          
+            return View(produto);
+        }
 
 
-            //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
-            TempData["Mensagem"] = $"{produtoModel.Nome} cadastrado com sucesso!";
+        [HttpPost]
+         public IActionResult Editar(ProdutoModel produtoModel)
+        {
+            if(string.IsNullOrEmpty(produtoModel.Nome))
+            {
+                ViewBag.Mensagem = "O campo nome é requerido";
 
-            return RedirectToAction("Index");
+                return View(produtoModel);
+
+            } else
+            {
+                //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
+                TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso!";
+
+                return RedirectToAction("Index");
+            }
+        }
+
+           
+        
+
+        [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var produto = produtos[id - 1];
+
+            ViewBag.Produto = produto;
+
+            return View();
         }
 
 

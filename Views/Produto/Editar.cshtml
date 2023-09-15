@@ -6,7 +6,8 @@
 
 @model ProdutoModel
 
-<h1>Produto - Novo</h1>
+<h1>Produto - Editar</h1>
+
 
 <div class="container">
     <div class="row">
@@ -17,7 +18,9 @@
                 {
                     <div class="alert alert-danger">@ViewBag.Mensagem</div>
                 }
-                <form action="/Produto/Novo" method="post">
+
+                <form action="/Produto/Editar" method="post">
+                    <input type="hidden" name="ProdutoId" value="@Model.ProdutoId"/>
                     <div class="form-group">
                         <label>Nome:</label>
                         <input type="text" name="nome" value="@Model.Nome" class="form-control w-50" size="30" />
@@ -53,6 +56,7 @@
                         <input type="text" name="DataExpiracao" value="@Model.DataExpiracao"
                                class="form-control w-25" />
                     </div>
+
 
                     <hr class="hr" />
                     <input type="submit" value="Enviar" />
