@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IList<TipoProdutoModel>
+
+<h1>Tipo de Produto</h1>
+
+
+@if (!String.IsNullOrEmpty((String)@TempData["mensagem"]))
+{
+    <div class="alert alert-warning" role="alert">@TempData["Mensagem"]</div>
+}
+<p class="toolbar">
+    <a href="/TipoProduto/Novo" class="create btn btn-dark">Novo tipo produto</a>
+</p>
+
+<table class="table table-striped" border="1" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th data-field="id">Id</th>
+            <th data-field="name">Nome</th>
+            <th data-field="descricao">Descrição</th>           
+            <th class="actions" width="220">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var tipoProduto in Model)
+        {
+            <tr>
+                <td data-field="id">@tipoProduto.Id</td>
+                <td data-field="name">@tipoProduto.Nome</td>
+                <td data-field="tipo">@tipoProduto.Descricao</td>                
+                <td class="actions" width="220">
+                    <a href="/TipoProduto/Detalhe/@tipoProduto.Id">Detalhe</a>
+                    <a href="/TipoProduto/Editar/@tipoProduto.Id">Editar</a>
+                    <a href="/TipoProduto/Remover/@tipoProduto.Id">Remover</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
