@@ -1,56 +1,33 @@
-﻿using Fiap.Web.Donation.Models;
+﻿using Fiap.Web.Donation.Data;
+using Fiap.Web.Donation.Models;
+using Fiap.Web.Donation.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Fiap.Web.Donation.Controllers
 {
     public class ProdutoController : Controller
     {
-        private List<ProdutoModel> produtos;
 
-        public ProdutoController()
+        private readonly ProdutoRepository produtoRepository;
+        private readonly TipoProdutoRepository tipoprodutoRepository;
+
+        private readonly int UsuarioId = 1;
+
+
+        public ProdutoController(DataContext dataContext)
         {
-            produtos = new List<ProdutoModel>{
-                new ProdutoModel()
-                {
-                    ProdutoId = 1,
-                    Nome = "Iphone 11",
-                    TipoProdutoId = 1,
-                    Disponivel = true,
-                    DataExpiracao = DateTime.Now,
-                },
-                new ProdutoModel()
-                {
-                    ProdutoId = 2,
-                    Nome = "Iphone 12",
-                    TipoProdutoId = 2,
-                    Disponivel = true,
-                    DataExpiracao = DateTime.Now,
-                },
-                new ProdutoModel()
-                {
-                    ProdutoId = 3,
-                    Nome = "Iphone 13",
-                    TipoProdutoId = 1,
-                    Disponivel = true,
-                    DataExpiracao = DateTime.Now,
-                },
-                new ProdutoModel()
-                {
-                    ProdutoId = 4,
-                    Nome = "Iphone 14",
-                    TipoProdutoId = 1,
-                    Disponivel = false,
-                    DataExpiracao = DateTime.Now,
-                },
-
-            };
+           
+            produtoRepository = new ProdutoRepository(dataContext);            
+            tipoprodutoRepository = new TipoProdutoRepository(dataContext);            
 
         }
+
         [HttpGet]
         public IActionResult Index()
         {
 
-            
+            var produtos = produtoRepository.FindAllWithTipoOrderByName();
             //TempData["Produtos"] = produtos;
 
             return View(produtos);
@@ -75,6 +52,8 @@ namespace Fiap.Web.Donation.Controllers
             }
             else
             {
+                produtoModel.UsuarioId = 1;
+                produtoRepository.Insert(produtoModel);
 
                 //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
                 TempData["Mensagem"] = $"{produtoModel.Nome} cadastrado com sucesso!";
@@ -86,7 +65,9 @@ namespace Fiap.Web.Donation.Controllers
          [HttpGet]
         public IActionResult Editar(int id)
         {
-            var produto = produtos[id - 1];
+            ComboTipoProduto();
+
+            var produto = produtoRepository.FindById(id);
 
           
             return View(produto);
@@ -98,12 +79,18 @@ namespace Fiap.Web.Donation.Controllers
         {
             if(string.IsNullOrEmpty(produtoModel.Nome))
             {
+                ComboTipoProduto();
+
                 ViewBag.Mensagem = "O campo nome é requerido";
 
                 return View(produtoModel);
 
             } else
             {
+                
+                produtoModel.UsuarioId = 1;
+                produtoRepository.Update(produtoModel);
+
                 //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
                 TempData["Mensagem"] = $"{produtoModel.Nome} alterado com sucesso!";
 
@@ -114,16 +101,15 @@ namespace Fiap.Web.Donation.Controllers
            
         
 
-        [HttpGet]
-        public IActionResult Detalhes(int id)
+       
+        private void ComboTipoProduto()
         {
-            var produto = produtos[id - 1];
+            var tiposProdutos = tipoprodutoRepository.FindAll();
 
-            ViewBag.Produto = produto;
+            var comboTipoProdutos = new SelectList(tiposProdutos, "TipoProdutoId", "Nome");
 
-            return View();
+            ViewBag.TipoProdutos = comboTipoProdutos;
         }
-
 
     }
 }

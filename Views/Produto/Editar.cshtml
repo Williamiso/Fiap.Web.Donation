@@ -35,15 +35,13 @@
                         <label class="form-check-label">Disponível</label>
                     </div>
                     <div class="form-group">
-                        <label>Tipo:</label>
-                        <select name="TipoProdutoId" class="form-control w-75">
+                        <label>Tipo: @Model.TipoProdutoId </label>
+                        <select asp-for="TipoProdutoId" class="form-control w-75" asp-items="@ViewBag.TipoProdutos">
                             <option value="0">Selecione</option>
-                            <option value="1">Celular</option>
-                            <option value="2">Televisor</option>
-                            <option value="1">Eletrodoméstico</option>
+                            
                         </select>
-                    </div>
-                    <div class="form-group">
+                        </div>
+                        <div class="form-group">
                         <label>Sugestão de troca:</label>
                         <textarea name="SugestaoTroca" class="form-control w-75">@Model.SugestaoTroca</textarea>
                     </div>
