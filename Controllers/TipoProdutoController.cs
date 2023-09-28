@@ -68,6 +68,7 @@ namespace Fiap.Web.Donation.Controllers
         }
 
         // GET: TipoProduto/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.TipoProdutos == null)
@@ -113,7 +114,7 @@ namespace Fiap.Web.Donation.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             return View(tipoProdutoModel);
         }

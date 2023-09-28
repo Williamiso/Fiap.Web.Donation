@@ -1,21 +1,29 @@
-﻿using Fiap.Web.Donation.Models;
+﻿using Fiap.Web.Donation.Data;
+using Fiap.Web.Donation.Models;
+using Fiap.Web.Donation.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Fiap.Web.Donation.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ProdutoRepository produtoRepository;
+
+        public HomeController(ILogger<HomeController> logger, DataContext dataContext, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _logger = logger;
+            produtoRepository = new ProdutoRepository(dataContext);
         }
 
         public IActionResult Index()
         {
-            return View();
+            
+            var lista = produtoRepository.FindAllDisponivelParaTroca(true, UsuarioId);
+
+            return View(lista); 
         }
 
         public IActionResult Privacy()

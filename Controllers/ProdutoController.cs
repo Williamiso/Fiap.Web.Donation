@@ -6,19 +6,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Fiap.Web.Donation.Controllers
 {
-    public class ProdutoController : Controller
+    public class ProdutoController : BaseController
     {
 
-        private readonly ProdutoRepository produtoRepository;
+        private readonly IProdutoRepository produtoRepository;
+
         private readonly TipoProdutoRepository tipoprodutoRepository;
 
-        private readonly int UsuarioId = 1;
 
-
-        public ProdutoController(DataContext dataContext)
+        public ProdutoController(DataContext dataContext, IHttpContextAccessor httpContextAccessor, IProdutoRepository _produtoRepository) : base(httpContextAccessor)
         {
-           
-            produtoRepository = new ProdutoRepository(dataContext);            
+
+            produtoRepository = _produtoRepository;            
             tipoprodutoRepository = new TipoProdutoRepository(dataContext);            
 
         }
@@ -52,7 +51,7 @@ namespace Fiap.Web.Donation.Controllers
             }
             else
             {
-                produtoModel.UsuarioId = 1;
+                produtoModel.UsuarioId = UsuarioId;
                 produtoRepository.Insert(produtoModel);
 
                 //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
@@ -88,7 +87,7 @@ namespace Fiap.Web.Donation.Controllers
             } else
             {
                 
-                produtoModel.UsuarioId = 1;
+                produtoModel.UsuarioId = UsuarioId;
                 produtoRepository.Update(produtoModel);
 
                 //ViewBag.Mensagem = $"{produtoModel.Nome} cadastrado com sucesso";
